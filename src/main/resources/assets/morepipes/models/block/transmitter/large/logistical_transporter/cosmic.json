@@ -1,0 +1,9 @@
+{
+  "parent": "mekanism:block/transmitter/large/logistical_transporter/transporter",
+  "textures": {
+    "side": "morepipes:block/models/multipart/cosmic_logistical_transporter_vertical",
+    "center_down": "morepipes:block/models/multipart/cosmic_logistical_transporter",
+    "side_opaque": "morepipes:block/models/multipart/opaque/cosmic_logistical_transporter_vertical",
+    "center_opaque": "morepipes:block/models/multipart/opaque/cosmic_logistical_transporter"
+  }
+}

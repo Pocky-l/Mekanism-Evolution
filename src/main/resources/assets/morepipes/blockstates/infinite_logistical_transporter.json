@@ -1,0 +1,7 @@
+{
+  "variants": {
+    "": {
+      "model": "morepipes:block/transmitter/large/logistical_transporter/infinite"
+    }
+  }
+}

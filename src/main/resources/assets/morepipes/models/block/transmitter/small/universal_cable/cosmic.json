@@ -1,0 +1,9 @@
+{
+  "parent": "mekanism:block/transmitter/small/small",
+  "textures": {
+    "side": "morepipes:block/models/multipart/cosmic_universal_cable_vertical",
+    "center_down": "morepipes:block/models/multipart/cosmic_universal_cable",
+    "side_opaque": "morepipes:block/models/multipart/opaque/cosmic_universal_cable_vertical",
+    "center_opaque": "morepipes:block/models/multipart/cosmic_universal_cable"
+  }
+}
