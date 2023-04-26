@@ -3,6 +3,7 @@ package su.gamepoint.morepipes.registers;
 import mekanism.common.registration.impl.BlockDeferredRegister;
 import mekanism.common.registration.impl.BlockRegistryObject;
 import mekanism.common.tier.CableTier;
+import mekanism.common.tier.PipeTier;
 import mekanism.common.tier.TransporterTier;
 import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.level.block.Block;
@@ -13,6 +14,8 @@ import su.gamepoint.morepipes.common.block.transmitter.cable.MoreBlockUniversalC
 import su.gamepoint.morepipes.common.block.transmitter.cable.MoreItemBlockUniversalCable;
 import su.gamepoint.morepipes.common.block.transmitter.logisticaltransporter.MoreBlockLogisticalTransporter;
 import su.gamepoint.morepipes.common.block.transmitter.logisticaltransporter.MoreItemBlockLogisticalTransporter;
+import su.gamepoint.morepipes.common.block.transmitter.pipe.MoreBlockMechanicalPipe;
+import su.gamepoint.morepipes.common.block.transmitter.pipe.MoreItemBlockMechanicalPipe;
 
 import java.util.function.Function;
 import java.util.function.Supplier;
@@ -34,6 +37,15 @@ public class BlockRegister {
     public static final BlockRegistryObject<MoreBlockLogisticalTransporter, MoreItemBlockLogisticalTransporter> SUPREME_LOGISTICAL_TRANSPORTER = registerLogisticalTransporter("supreme", TransporterTier.ADVANCED);
     public static final BlockRegistryObject<MoreBlockLogisticalTransporter, MoreItemBlockLogisticalTransporter> COSMIC_LOGISTICAL_TRANSPORTER = registerLogisticalTransporter("cosmic", TransporterTier.ELITE);
     public static final BlockRegistryObject<MoreBlockLogisticalTransporter, MoreItemBlockLogisticalTransporter> INFINITE_LOGISTICAL_TRANSPORTER = registerLogisticalTransporter("infinite", TransporterTier.ULTIMATE);
+
+    public static final BlockRegistryObject<MoreBlockMechanicalPipe, MoreItemBlockMechanicalPipe> ABSOLUTE_MECHANICAL_PIPE = registerMechanicalPipe("absolute", PipeTier.BASIC);
+    public static final BlockRegistryObject<MoreBlockMechanicalPipe, MoreItemBlockMechanicalPipe> SUPREME_MECHANICAL_PIPE = registerMechanicalPipe("supreme", PipeTier.ADVANCED);
+    public static final BlockRegistryObject<MoreBlockMechanicalPipe, MoreItemBlockMechanicalPipe> COSMIC_MECHANICAL_PIPE = registerMechanicalPipe("cosmic", PipeTier.ELITE);
+    public static final BlockRegistryObject<MoreBlockMechanicalPipe, MoreItemBlockMechanicalPipe> INFINITE_MECHANICAL_PIPE = registerMechanicalPipe("infinite", PipeTier.ULTIMATE);
+
+    private static BlockRegistryObject<MoreBlockMechanicalPipe, MoreItemBlockMechanicalPipe> registerMechanicalPipe(String tierName, PipeTier tier) {
+        return registerTieredBlock(tierName, "_mechanical_pipe", () -> new MoreBlockMechanicalPipe(tier), MoreItemBlockMechanicalPipe::new);
+    }
 
     private static BlockRegistryObject<MoreBlockLogisticalTransporter, MoreItemBlockLogisticalTransporter> registerLogisticalTransporter(String tierName, TransporterTier tier) {
         return registerTieredBlock(tierName, "_logistical_transporter", () -> new MoreBlockLogisticalTransporter(tier), MoreItemBlockLogisticalTransporter::new);

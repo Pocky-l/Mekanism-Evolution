@@ -10,6 +10,7 @@ import su.gamepoint.morepipes.common.block.transmitter.cable.MoreTileEntityUnive
 import su.gamepoint.morepipes.common.block.transmitter.logisticaltransporter.MoreTileEntityLogisticalTransporter;
 import su.gamepoint.morepipes.common.block.transmitter.logisticaltransporter.MoreTileEntityLogisticalTransporterBase;
 import su.gamepoint.morepipes.common.block.transmitter.logisticaltransporter.MoreTileEntityTransmitter;
+import su.gamepoint.morepipes.common.block.transmitter.pipe.MoreTileEntityMechanicalPipe;
 
 /**
  * @author Dudko Roman
@@ -33,5 +34,10 @@ public class TileEntityTypes {
     public static final TileEntityTypeRegistryObject<MoreTileEntityLogisticalTransporter> SUPREME_LOGISTICAL_TRANSPORTER = TILE_ENTITY_TYPES.builder(BlockRegister.SUPREME_LOGISTICAL_TRANSPORTER, (pos, state) -> new MoreTileEntityLogisticalTransporter(BlockRegister.SUPREME_LOGISTICAL_TRANSPORTER, pos, state)).clientTicker(MoreTileEntityLogisticalTransporterBase::tickClient).serverTicker(MoreTileEntityTransmitter::moreTickServer).build();
     public static final TileEntityTypeRegistryObject<MoreTileEntityLogisticalTransporter> COSMIC_LOGISTICAL_TRANSPORTER = TILE_ENTITY_TYPES.builder(BlockRegister.COSMIC_LOGISTICAL_TRANSPORTER, (pos, state) -> new MoreTileEntityLogisticalTransporter(BlockRegister.COSMIC_LOGISTICAL_TRANSPORTER, pos, state)).clientTicker(MoreTileEntityLogisticalTransporterBase::tickClient).serverTicker(MoreTileEntityTransmitter::moreTickServer).build();
     public static final TileEntityTypeRegistryObject<MoreTileEntityLogisticalTransporter> INFINITE_LOGISTICAL_TRANSPORTER = TILE_ENTITY_TYPES.builder(BlockRegister.INFINITE_LOGISTICAL_TRANSPORTER, (pos, state) -> new MoreTileEntityLogisticalTransporter(BlockRegister.INFINITE_LOGISTICAL_TRANSPORTER, pos, state)).clientTicker(MoreTileEntityLogisticalTransporterBase::tickClient).serverTicker(MoreTileEntityTransmitter::moreTickServer).build();
+
+    public static final TileEntityTypeRegistryObject<MoreTileEntityMechanicalPipe> ABSOLUTE_MECHANICAL_PIPE = registerTransmitter(BlockRegister.ABSOLUTE_MECHANICAL_PIPE, (pos, state) -> new MoreTileEntityMechanicalPipe(BlockRegister.ABSOLUTE_MECHANICAL_PIPE, pos, state));
+    public static final TileEntityTypeRegistryObject<MoreTileEntityMechanicalPipe> SUPREME_MECHANICAL_PIPE = registerTransmitter(BlockRegister.SUPREME_MECHANICAL_PIPE, (pos, state) -> new MoreTileEntityMechanicalPipe(BlockRegister.SUPREME_MECHANICAL_PIPE, pos, state));
+    public static final TileEntityTypeRegistryObject<MoreTileEntityMechanicalPipe> COSMIC_MECHANICAL_PIPE = registerTransmitter(BlockRegister.COSMIC_MECHANICAL_PIPE, (pos, state) -> new MoreTileEntityMechanicalPipe(BlockRegister.COSMIC_MECHANICAL_PIPE, pos, state));
+    public static final TileEntityTypeRegistryObject<MoreTileEntityMechanicalPipe> INFINITE_MECHANICAL_PIPE = registerTransmitter(BlockRegister.INFINITE_MECHANICAL_PIPE, (pos, state) -> new MoreTileEntityMechanicalPipe(BlockRegister.INFINITE_MECHANICAL_PIPE, pos, state));
 
 }

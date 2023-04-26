@@ -7,5 +7,10 @@
   "block.morepipes.absolute_universal_cable": "Абсолютний універсальний дріт",
   "block.morepipes.supreme_universal_cable": "Вищий універсальний дріт",
   "block.morepipes.cosmic_universal_cable": "Космічний універсальний дріт",
-  "block.morepipes.infinite_universal_cable": "Необмежений універсальний дріт"
+  "block.morepipes.infinite_universal_cable": "Необмежений універсальний дріт",
+
+  "block.morepipes.absolute_mechanical_pipe": "Абсолютна механічна труба",
+  "block.morepipes.supreme_mechanical_pipe": "Найвища механічна труба",
+  "block.morepipes.cosmic_mechanical_pipe": "Космічна механічна труба",
+  "block.morepipes.infinite_mechanical_pipe": "Необмежена механічна труба"
 }

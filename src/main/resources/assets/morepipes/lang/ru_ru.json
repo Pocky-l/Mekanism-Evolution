@@ -7,5 +7,10 @@
   "block.morepipes.absolute_universal_cable": "Абсолютный универсальный провод",
   "block.morepipes.supreme_universal_cable": "Высший универсальный провод",
   "block.morepipes.cosmic_universal_cable": "Космический универсальный провод",
-  "block.morepipes.infinite_universal_cable": "Бесконечный универсальный провод"
+  "block.morepipes.infinite_universal_cable": "Бесконечный универсальный провод",
+
+  "block.morepipes.absolute_mechanical_pipe": "Абсолютная механическая труба",
+  "block.morepipes.supreme_mechanical_pipe": "Высшая механическая труба",
+  "block.morepipes.cosmic_mechanical_pipe": "Космическая механическая труба",
+  "block.morepipes.infinite_mechanical_pipe": "Бесконечная механическая труба"
 }

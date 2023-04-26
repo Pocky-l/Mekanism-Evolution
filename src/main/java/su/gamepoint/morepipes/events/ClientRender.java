@@ -12,6 +12,7 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import su.gamepoint.morepipes.MorePipesMod;
 import su.gamepoint.morepipes.client.MoreRenderLogisticalTransporter;
+import su.gamepoint.morepipes.client.MoreRenderMechanicalPipe;
 import su.gamepoint.morepipes.client.MoreRenderUniversalCable;
 import su.gamepoint.morepipes.registers.BlockRegister;
 import su.gamepoint.morepipes.registers.TileEntityTypes;
@@ -30,6 +31,8 @@ public class ClientRender {
         ClientRegistrationUtil.bindTileEntityRenderer(event, MoreRenderLogisticalTransporter::new, TileEntityTypes.ABSOLUTE_LOGISTICAL_TRANSPORTER,
                 TileEntityTypes.SUPREME_LOGISTICAL_TRANSPORTER, TileEntityTypes.COSMIC_LOGISTICAL_TRANSPORTER, TileEntityTypes.INFINITE_LOGISTICAL_TRANSPORTER);
 
+        ClientRegistrationUtil.bindTileEntityRenderer(event, MoreRenderMechanicalPipe::new, TileEntityTypes.ABSOLUTE_MECHANICAL_PIPE,
+                TileEntityTypes.SUPREME_MECHANICAL_PIPE, TileEntityTypes.COSMIC_MECHANICAL_PIPE, TileEntityTypes.INFINITE_MECHANICAL_PIPE);
     }
 
     @SubscribeEvent
@@ -44,6 +47,11 @@ public class ClientRender {
             ItemBlockRenderTypes.setRenderLayer(BlockRegister.SUPREME_LOGISTICAL_TRANSPORTER.getBlock(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(BlockRegister.COSMIC_LOGISTICAL_TRANSPORTER.getBlock(), RenderType.translucent());
             ItemBlockRenderTypes.setRenderLayer(BlockRegister.INFINITE_LOGISTICAL_TRANSPORTER.getBlock(), RenderType.translucent());
+
+            ItemBlockRenderTypes.setRenderLayer(BlockRegister.ABSOLUTE_MECHANICAL_PIPE.getBlock(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(BlockRegister.SUPREME_MECHANICAL_PIPE.getBlock(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(BlockRegister.COSMIC_MECHANICAL_PIPE.getBlock(), RenderType.translucent());
+            ItemBlockRenderTypes.setRenderLayer(BlockRegister.INFINITE_MECHANICAL_PIPE.getBlock(), RenderType.translucent());
 
         });
     }

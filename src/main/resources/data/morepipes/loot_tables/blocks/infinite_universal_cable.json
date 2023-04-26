@@ -11,7 +11,7 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "name": "morepipes:absolute_universal_infinite"
+          "name": "morepipes:infinite_universal_cable"
         }
       ],
       "name": "main",

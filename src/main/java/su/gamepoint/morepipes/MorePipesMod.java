@@ -7,7 +7,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import su.gamepoint.morepipes.config.PipeConfig;
 import su.gamepoint.morepipes.registers.BlockRegister;
-import su.gamepoint.morepipes.registers.ItemRegister;
 import su.gamepoint.morepipes.registers.TileEntityTypes;
 
 @Mod(MorePipesMod.MODID)
@@ -27,7 +26,6 @@ public class MorePipesMod {
 
         BlockRegister.REGISTRY_BLOCK.register(eventBus);
         TileEntityTypes.TILE_ENTITY_TYPES.register(eventBus);
-        ItemRegister.ITEMS.register(eventBus);
 
         eventBus.register(this);
     }

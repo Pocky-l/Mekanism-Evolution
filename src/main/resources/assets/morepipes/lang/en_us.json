@@ -7,5 +7,10 @@
   "block.morepipes.absolute_universal_cable": "Absolute Universal Cable",
   "block.morepipes.supreme_universal_cable": "Supreme Universal Cable",
   "block.morepipes.cosmic_universal_cable": "Cosmic Universal Cable",
-  "block.morepipes.infinite_universal_cable": "Infinite Universal Cable"
+  "block.morepipes.infinite_universal_cable": "Infinite Universal Cable",
+
+  "block.morepipes.absolute_mechanical_pipe": "Absolute Mechanical Pipe",
+  "block.morepipes.supreme_mechanical_pipe": "Supreme Mechanical Pipe",
+  "block.morepipes.cosmic_mechanical_pipe": "Cosmic Mechanical Pipe",
+  "block.morepipes.infinite_mechanical_pipe": "Infinite Mechanical Pipe"
 }
