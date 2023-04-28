@@ -40,16 +40,7 @@ public class MoreItemBlockUniversalCable extends ItemBlockMultipartAble<MoreBloc
             tooltip.add(MekanismLang.GENERIC_TRANSFER.translateColored(EnumColor.PURPLE, MekanismLang.ENERGY_EU_SHORT, MekanismLang.IC2));
             tooltip.add(MekanismLang.GENERIC_TRANSFER.translateColored(EnumColor.PURPLE, MekanismLang.ENERGY_JOULES_PLURAL, MekanismLang.MEKANISM));
         } else {
-            CableTier tier = this.getTier();
-            FloatingLong capacity = null;
-            switch (tier) {
-                case BASIC -> capacity = FloatingLong.create(65536000L);
-                case ADVANCED -> capacity = FloatingLong.create(524288000L);
-                case ELITE -> capacity = FloatingLong.create(4194304000L);
-                case ULTIMATE -> capacity = FloatingLong.create(33554432000L);
-            }
-
-            tooltip.add(MekanismLang.CAPACITY_PER_TICK.translateColored(EnumColor.INDIGO, EnumColor.GRAY, EnergyDisplay.of(capacity)));
+            tooltip.add(MekanismLang.CAPACITY_PER_TICK.translateColored(EnumColor.INDIGO, EnumColor.GRAY, EnergyDisplay.of(UCTier.getCapacityAsFloatingLong(this.getTier()))));
             tooltip.add(MekanismLang.HOLD_FOR_DETAILS.translateColored(EnumColor.GRAY, EnumColor.INDIGO, MekanismKeyHandler.detailsKey.getTranslatedKeyMessage()));
         }
     }

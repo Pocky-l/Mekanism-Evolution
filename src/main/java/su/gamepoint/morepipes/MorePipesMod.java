@@ -1,5 +1,6 @@
 package su.gamepoint.morepipes;
 
+import mekanism.common.config.MekanismConfigHelper;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.ModContainer;
 import net.minecraftforge.fml.ModLoadingContext;
@@ -22,7 +23,7 @@ public class MorePipesMod {
 
         ModContainer modContainer = ModLoadingContext.get().getActiveContainer();
 
-        //MekanismConfigHelper.registerConfig(modContainer, config);
+        MekanismConfigHelper.registerConfig(modContainer, config);
 
         BlockRegister.REGISTRY_BLOCK.register(eventBus);
         TileEntityTypes.TILE_ENTITY_TYPES.register(eventBus);
