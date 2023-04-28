@@ -1,6 +1,7 @@
 package su.gamepoint.morepipes.common.block.transmitter.pipe;
 
 import mekanism.common.tier.PipeTier;
+import su.gamepoint.morepipes.MorePipesMod;
 
 /**
  * @author Dudko Roman
@@ -8,19 +9,19 @@ import mekanism.common.tier.PipeTier;
 public class PTier {
     public static int getPipePullAmount(PipeTier tier) {
         return switch (tier) {
-            case BASIC -> 128000;
-            case ADVANCED -> 512000;
-            case ELITE -> 2048000;
-            case ULTIMATE -> 8192000;
+            case BASIC -> MorePipesMod.getConfig().absoluteMechanicalPipePullAmount.get().intValue();
+            case ADVANCED -> MorePipesMod.getConfig().supremeMechanicalPipePullAmount.get().intValue();
+            case ELITE -> MorePipesMod.getConfig().cosmicMechanicalPipePullAmount.get().intValue();
+            case ULTIMATE -> MorePipesMod.getConfig().infiniteMechanicalPipePullAmount.get().intValue();
         };
     }
 
     public static long getPipeCapacity(PipeTier tier) {
         return switch (tier) {
-            case BASIC -> 512000L;
-            case ADVANCED -> 2048000L;
-            case ELITE -> 8192000L;
-            case ULTIMATE -> 32768000L;
+            case BASIC -> MorePipesMod.getConfig().absoluteMechanicalPipeCapacity.get().longValue();
+            case ADVANCED -> MorePipesMod.getConfig().supremeMechanicalPipeCapacity.get().longValue();
+            case ELITE -> MorePipesMod.getConfig().cosmicMechanicalPipeCapacity.get().longValue();
+            case ULTIMATE -> MorePipesMod.getConfig().infiniteMechanicalPipeCapacity.get().longValue();
         };
     }
 }

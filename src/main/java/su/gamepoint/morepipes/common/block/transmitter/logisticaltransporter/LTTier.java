@@ -1,6 +1,7 @@
 package su.gamepoint.morepipes.common.block.transmitter.logisticaltransporter;
 
 import mekanism.common.tier.TransporterTier;
+import su.gamepoint.morepipes.MorePipesMod;
 
 /**
  * @author Dudko Roman
@@ -8,19 +9,19 @@ import mekanism.common.tier.TransporterTier;
 public class LTTier {
     public static int getSpeed(TransporterTier tier) {
         return switch (tier) {
-            case BASIC -> 100;
-            case ADVANCED -> 200;
-            case ELITE -> 400;
-            case ULTIMATE -> 800;
+            case BASIC -> MorePipesMod.getConfig().absoluteLogisticalTransporterSpeed.get().intValue();
+            case ADVANCED -> MorePipesMod.getConfig().supremeLogisticalTransporterSpeed.get().intValue();
+            case ELITE -> MorePipesMod.getConfig().cosmicLogisticalTransporterSpeed.get().intValue();
+            case ULTIMATE -> MorePipesMod.getConfig().infiniteLogisticalTransporterSpeed.get().intValue();
         };
     }
 
     public static int getPullAmount(TransporterTier tier) {
         return switch (tier) {
-            case BASIC -> 128;
-            case ADVANCED -> 256;
-            case ELITE -> 512;
-            case ULTIMATE -> 1024;
+            case BASIC -> MorePipesMod.getConfig().absoluteLogisticalTransporterPullAmount.get().intValue();
+            case ADVANCED -> MorePipesMod.getConfig().supremeLogisticalTransporterPullAmount.get().intValue();
+            case ELITE -> MorePipesMod.getConfig().cosmicLogisticalTransporterPullAmount.get().intValue();
+            case ULTIMATE -> MorePipesMod.getConfig().infiniteLogisticalTransporterPullAmount.get().intValue();
         };
     }
 }
