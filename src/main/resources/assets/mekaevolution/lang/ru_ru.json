@@ -1,0 +1,26 @@
+{
+  "block.mekaevolution.absolute_logistical_transporter": "Абсолютный логистический транспортер",
+  "block.mekaevolution.supreme_logistical_transporter": "Высший логистический транспортер",
+  "block.mekaevolution.cosmic_logistical_transporter": "Космический логистический транспортер",
+  "block.mekaevolution.infinite_logistical_transporter": "Бесконечный логистический транспортер",
+
+  "block.mekaevolution.absolute_universal_cable": "Абсолютный универсальный провод",
+  "block.mekaevolution.supreme_universal_cable": "Высший универсальный провод",
+  "block.mekaevolution.cosmic_universal_cable": "Космический универсальный провод",
+  "block.mekaevolution.infinite_universal_cable": "Бесконечный универсальный провод",
+
+  "block.mekaevolution.absolute_mechanical_pipe": "Абсолютная механическая труба",
+  "block.mekaevolution.supreme_mechanical_pipe": "Высшая механическая труба",
+  "block.mekaevolution.cosmic_mechanical_pipe": "Космическая механическая труба",
+  "block.mekaevolution.infinite_mechanical_pipe": "Бесконечная механическая труба",
+
+  "block.mekaevolution.absolute_energy_cube": "Абсолютный энергетический куб",
+  "block.mekaevolution.supreme_energy_cube": "Высший энергетический куб",
+  "block.mekaevolution.cosmic_energy_cube": "Космический энергетический куб",
+  "block.mekaevolution.infinite_energy_cube": "Бесконечный энергетический куб",
+
+  "container.mekaevolution.absolute_energy_cube": "Абсолютный энергетический куб",
+  "container.mekaevolution.supreme_energy_cube": "Высший энергетический куб",
+  "container.mekaevolution.cosmic_energy_cube": "Космический энергетический куб",
+  "container.mekaevolution.infinite_energy_cube": "Бесконечный энергетический куб"
+}

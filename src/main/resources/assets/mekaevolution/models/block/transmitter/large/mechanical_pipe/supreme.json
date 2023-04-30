@@ -1,0 +1,9 @@
+{
+  "parent": "mekanism:block/transmitter/large/large",
+  "textures": {
+    "side": "mekaevolution:block/models/multipart/supreme_mechanical_pipe_vertical",
+    "center_down": "mekaevolution:block/models/multipart/supreme_mechanical_pipe",
+    "side_opaque": "mekaevolution:block/models/multipart/opaque/supreme_mechanical_pipe_vertical",
+    "center_opaque": "mekaevolution:block/models/multipart/opaque/supreme_mechanical_pipe"
+  }
+}

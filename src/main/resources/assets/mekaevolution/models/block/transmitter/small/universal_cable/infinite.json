@@ -1,0 +1,9 @@
+{
+  "parent": "mekanism:block/transmitter/small/small",
+  "textures": {
+    "side": "mekaevolution:block/models/multipart/infinite_universal_cable_vertical",
+    "center_down": "mekaevolution:block/models/multipart/infinite_universal_cable",
+    "side_opaque": "mekaevolution:block/models/multipart/opaque/infinite_universal_cable_vertical",
+    "center_opaque": "mekaevolution:block/models/multipart/infinite_universal_cable"
+  }
+}

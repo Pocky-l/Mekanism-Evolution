@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "tag": "mekanism:alloys/atomic"
+    },
+    "P": {
+      "item": "mekaevolution:cosmic_universal_cable"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "PAP",
+    "PPP"
+  ],
+  "result": {
+    "count": 4,
+    "item": "mekaevolution:infinite_universal_cable"
+  }
+}

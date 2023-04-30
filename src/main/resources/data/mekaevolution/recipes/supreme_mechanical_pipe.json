@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "tag": "mekanism:alloys/atomic"
+    },
+    "P": {
+      "item": "mekaevolution:absolute_mechanical_pipe"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "PAP",
+    "PPP"
+  ],
+  "result": {
+    "count": 4,
+    "item": "mekaevolution:supreme_mechanical_pipe"
+  }
+}

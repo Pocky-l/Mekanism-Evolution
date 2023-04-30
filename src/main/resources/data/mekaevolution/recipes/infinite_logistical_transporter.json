@@ -1,0 +1,20 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "key": {
+    "A": {
+      "tag": "mekanism:alloys/atomic"
+    },
+    "P": {
+      "item": "mekaevolution:cosmic_logistical_transporter"
+    }
+  },
+  "pattern": [
+    "PPP",
+    "PAP",
+    "PPP"
+  ],
+  "result": {
+    "count": 4,
+    "item": "mekaevolution:infinite_logistical_transporter"
+  }
+}

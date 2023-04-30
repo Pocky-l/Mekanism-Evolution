@@ -1,0 +1,27 @@
+{
+  "variants": {
+    "facing=up": {
+      "model": "mekaevolution:block/energy_cube",
+      "x": -90
+    },
+    "facing=down": {
+      "model": "mekaevolution:block/energy_cube",
+      "x": 90
+    },
+    "facing=north": {
+      "model": "mekaevolution:block/energy_cube"
+    },
+    "facing=south": {
+      "model": "mekaevolution:block/energy_cube",
+      "y": 180
+    },
+    "facing=east": {
+      "model": "mekaevolution:block/energy_cube",
+      "y": 90
+    },
+    "facing=west": {
+      "model": "mekaevolution:block/energy_cube",
+      "y": -90
+    }
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "parent": "mekanism:block/transmitter/large/logistical_transporter/transporter",
+  "textures": {
+    "side": "mekaevolution:block/models/multipart/cosmic_logistical_transporter_vertical",
+    "center_down": "mekaevolution:block/models/multipart/cosmic_logistical_transporter",
+    "side_opaque": "mekaevolution:block/models/multipart/opaque/cosmic_logistical_transporter_vertical",
+    "center_opaque": "mekaevolution:block/models/multipart/opaque/cosmic_logistical_transporter"
+  }
+}

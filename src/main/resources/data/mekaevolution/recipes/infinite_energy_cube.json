@@ -1,0 +1,22 @@
+{
+  "type": "mekanism:mek_data",
+  "key": {
+    "A": {
+      "tag": "mekanism:alloys/atomic"
+    },
+    "E": {
+      "item": "mekaevolution:cosmic_energy_cube"
+    },
+    "I": {
+      "tag": "forge:gems/diamond"
+    }
+  },
+  "pattern": [
+    "AEA",
+    "IEI",
+    "AEA"
+  ],
+  "result": {
+    "item": "mekaevolution:infinite_energy_cube"
+  }
+}
