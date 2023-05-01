@@ -16,8 +16,8 @@ import net.minecraft.core.BlockPos;
 import net.minecraft.core.Direction;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.level.block.state.BlockState;
+import net.minecraftforge.common.capabilities.ForgeCapabilities;
 import net.minecraftforge.fluids.FluidStack;
-import net.minecraftforge.fluids.capability.CapabilityFluidHandler;
 import su.gamepoint.pocky.mekaevolution.common.block.transmitter.logisticaltransporter.EvoTileEntityTransmitter;
 
 import javax.annotation.Nonnull;
@@ -34,10 +34,14 @@ public class EvoTileEntityMechanicalPipe extends EvoTileEntityTransmitter implem
 
     public EvoTileEntityMechanicalPipe(IBlockProvider blockProvider, BlockPos pos, BlockState state) {
         super(blockProvider, pos, state);
-        this.addCapabilityResolver(this.fluidHandlerManager = new FluidHandlerManager((direction) -> {
-            EvoMechanicalPipe pipe = this.getTransmitter();
-            return direction != null && pipe.getConnectionTypeRaw(direction) == ConnectionType.NONE ? Collections.emptyList() : pipe.getFluidTanks(direction);
-        }, new DynamicFluidHandler(this::getFluidTanks, this.getExtractPredicate(), this.getInsertPredicate(), null)));
+        addCapabilityResolver(fluidHandlerManager = new FluidHandlerManager(direction -> {
+            EvoMechanicalPipe pipe = getTransmitter();
+            if (direction != null && pipe.getConnectionTypeRaw(direction) == ConnectionType.NONE) {
+                //If we actually have a side, and our connection type on that side is none, then return that we have no tanks
+                return Collections.emptyList();
+            }
+            return pipe.getFluidTanks(direction);
+        }, new DynamicFluidHandler(this::getFluidTanks, getExtractPredicate(), getInsertPredicate(), null)));
         ComputerCapabilityHelper.addComputerCapabilities(this, this::addCapabilityResolver);
     }
 
@@ -82,7 +86,7 @@ public class EvoTileEntityMechanicalPipe extends EvoTileEntityTransmitter implem
     public void sideChanged(@Nonnull Direction side, @Nonnull ConnectionType old, @Nonnull ConnectionType type) {
         super.sideChanged(side, old, type);
         if (type == ConnectionType.NONE) {
-            this.invalidateCapability(CapabilityFluidHandler.FLUID_HANDLER_CAPABILITY, side);
+            invalidateCapability(ForgeCapabilities.FLUID_HANDLER, side);
             WorldUtils.notifyNeighborOfChange(this.level, side, this.worldPosition);
         } else if (old == ConnectionType.NONE) {
             WorldUtils.notifyNeighborOfChange(this.level, side, this.worldPosition);

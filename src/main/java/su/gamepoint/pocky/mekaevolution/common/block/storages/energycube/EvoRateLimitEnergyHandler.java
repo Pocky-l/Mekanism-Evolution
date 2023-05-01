@@ -10,7 +10,6 @@ import javax.annotation.ParametersAreNonnullByDefault;
 import mekanism.api.Action;
 import mekanism.api.AutomationType;
 import mekanism.api.IContentsListener;
-import mekanism.api.annotations.NonNull;
 import mekanism.api.energy.IEnergyContainer;
 import mekanism.api.energy.IMekanismStrictEnergyHandler;
 import mekanism.api.math.FloatingLong;
@@ -20,7 +19,7 @@ import mekanism.common.capabilities.energy.VariableCapacityEnergyContainer;
 import mekanism.common.capabilities.energy.item.ItemStackEnergyHandler;
 import mekanism.common.tier.EnergyCubeTier;
 import net.minecraft.MethodsReturnNonnullByDefault;
-import org.jetbrains.annotations.NotNull;
+import org.checkerframework.checker.nullness.qual.NonNull;
 import su.gamepoint.pocky.mekaevolution.utils.EvoFloatingLong;
 
 /**

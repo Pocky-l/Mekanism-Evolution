@@ -12,14 +12,13 @@ import mekanism.common.item.interfaces.IItemSustainedInventory;
 import mekanism.common.tier.EnergyCubeTier;
 import mekanism.common.util.StorageUtils;
 import mekanism.common.util.text.EnergyDisplay;
-import net.minecraft.core.NonNullList;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
-import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
-import net.minecraftforge.client.IItemRenderProperties;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import org.jetbrains.annotations.NotNull;
 import su.gamepoint.pocky.mekaevolution.client.energycube.EvoRenderEnergyCubeItem;
 
 import javax.annotation.Nonnull;
@@ -36,7 +35,7 @@ public class EvoItemBlockEnergyCube extends ItemBlockTooltip<EvoBlockEnergyCube>
     }
 
     @Override
-    public void initializeClient(@Nonnull Consumer<IItemRenderProperties> consumer) {
+    public void initializeClient(@Nonnull Consumer<IClientItemExtensions> consumer) {
         consumer.accept(new RenderPropertiesProvider.MekRenderProperties(EvoRenderEnergyCubeItem.RENDERER));
     }
 
@@ -59,37 +58,24 @@ public class EvoItemBlockEnergyCube extends ItemBlockTooltip<EvoBlockEnergyCube>
     }
 
     @Override
-    public void fillItemCategory(@Nonnull CreativeModeTab group, @Nonnull NonNullList<ItemStack> items) {
-        if (allowdedIn(group)) {
-            EnergyCubeTier tier = Attribute.getTier(getBlock(), EnergyCubeTier.class);
-            ItemStack stack = new ItemStack(this);
-
-            //Add the empty and charged variants
-            items.add(stack);
-            assert tier != null;
-            items.add(StorageUtils.getFilledEnergyVariant(stack.copy(), ECTier.getMaxEnergy(tier)));
-        }
-    }
-
-    @Override
-    public boolean isBarVisible(@Nonnull ItemStack stack) {
+    public boolean isBarVisible(@NotNull ItemStack stack) {
         return true;
     }
 
     @Override
-    public int getBarWidth(@Nonnull ItemStack stack) {
+    public int getBarWidth(@NotNull ItemStack stack) {
         return StorageUtils.getEnergyBarWidth(stack);
     }
 
     @Override
-    public int getBarColor(@Nonnull ItemStack stack) {
+    public int getBarColor(@NotNull ItemStack stack) {
         return MekanismConfig.client.energyColor.get();
     }
 
     @Override
     protected void gatherCapabilities(List<ItemCapabilityWrapper.ItemCapability> capabilities, ItemStack stack, CompoundTag nbt) {
         super.gatherCapabilities(capabilities, stack, nbt);
-        ItemCapabilityWrapper.ItemCapability capability = EvoRateLimitEnergyHandler.create(Attribute.getTier(getBlock(), EnergyCubeTier.class));
+        ItemCapabilityWrapper.ItemCapability capability = EvoRateLimitEnergyHandler.create(getTier());
         int index = IntStream.range(0, capabilities.size()).filter(i -> capabilities.get(i) instanceof ItemStackEnergyHandler).findFirst().orElse(-1);
         if (index != -1) {
             //This is likely always the path that will be taken

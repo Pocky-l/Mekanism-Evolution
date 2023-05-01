@@ -12,8 +12,8 @@ import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
 import mekanism.client.render.FluidRenderMap;
 import mekanism.client.render.MekanismRenderer;
-import mekanism.client.render.MekanismRenderer.FluidType;
 import mekanism.client.render.MekanismRenderer.Model3D;
+import mekanism.client.render.ModelRenderer;
 import mekanism.client.render.RenderResizableCuboid.FaceDisplay;
 import mekanism.client.render.transmitter.RenderTransmitterBase;
 import mekanism.common.base.ProfilerConstants;
@@ -21,11 +21,13 @@ import mekanism.common.content.network.FluidNetwork;
 import mekanism.common.content.network.transmitter.MechanicalPipe;
 import mekanism.common.lib.transmitter.ConnectionType;
 import mekanism.common.util.EnumUtils;
+import net.minecraft.client.Camera;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
 import net.minecraft.core.Direction;
 import net.minecraft.util.profiling.ProfilerFiller;
+import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.fluids.FluidStack;
 import su.gamepoint.pocky.mekaevolution.common.block.transmitter.pipe.EvoTileEntityMechanicalPipe;
 
@@ -38,7 +40,7 @@ public class EvoRenderMechanicalPipe extends RenderTransmitterBase<EvoTileEntity
     private static final float height = 0.45F;
     private static final float offset = 0.015F;
     //Note: this is basically used as an enum map (Direction), but null key is possible, which EnumMap doesn't support. 6 is used for null side
-    private static final Int2ObjectMap<FluidRenderMap<Int2ObjectMap<Model3D>>> cachedLiquids = new Int2ObjectArrayMap<>(7);
+    private static final Int2ObjectMap<FluidRenderMap<Int2ObjectMap<Model3D>>> cachedLiquids = new Int2ObjectArrayMap<>(8);
 
     public EvoRenderMechanicalPipe(BlockEntityRendererProvider.Context context) {
         super(context);
@@ -52,44 +54,55 @@ public class EvoRenderMechanicalPipe extends RenderTransmitterBase<EvoTileEntity
     protected void render(EvoTileEntityMechanicalPipe tile, float partialTick, PoseStack matrix, MultiBufferSource renderer, int light, int overlayLight,
                           ProfilerFiller profiler) {
         MechanicalPipe pipe = tile.getTransmitter();
-        if (pipe.hasTransmitterNetwork()) {
-            FluidNetwork network = pipe.getTransmitterNetwork();
-            if (!network.lastFluid.isEmpty() && !network.fluidTank.isEmpty() && network.currentScale > 0) {
-                FluidStack fluidStack = network.lastFluid;
-                float fluidScale = network.currentScale;
-                int stage;
-                if (fluidStack.getFluid().getAttributes().isGaseous(fluidStack)) {
-                    stage = stages - 1;
+        FluidNetwork network = pipe.getTransmitterNetwork();
+        FluidStack fluidStack = network.lastFluid;
+        if (fluidStack.isEmpty()) {
+            //Shouldn't be the case but validate it
+            return;
+        }
+        float fluidScale = network.currentScale;
+        int stage = Math.max(3, ModelRenderer.getStage(fluidStack, stages, fluidScale));
+        int glow = MekanismRenderer.calculateGlowLight(light, fluidStack);
+        int color = MekanismRenderer.getColorARGB(fluidStack, fluidScale);
+        List<String> connectionContents = new ArrayList<>();
+        boolean[] renderSides = new boolean[6];
+        boolean hasHorizontalSide = false;
+        int verticalSides = 0;
+        VertexConsumer buffer = renderer.getBuffer(Sheets.translucentCullBlockSheet());
+        Camera camera = getCamera();
+        for (Direction side : EnumUtils.DIRECTIONS) {
+            ConnectionType connectionType = pipe.getConnectionType(side);
+            if (connectionType == ConnectionType.NORMAL) {
+                //If it is normal we need to render it manually so to have it be the correct dimensions instead of too narrow
+                MekanismRenderer.renderObject(getModel(side, fluidStack, stage), matrix, buffer, color, glow, overlayLight, FaceDisplay.FRONT, camera, tile.getBlockPos());
+            } else if (connectionType != ConnectionType.NONE) {
+                connectionContents.add(side.getSerializedName() + connectionType.getSerializedName().toUpperCase(Locale.ROOT));
+            }
+            renderSides[side.ordinal()] = connectionType != ConnectionType.NORMAL;
+            if (connectionType != ConnectionType.NONE) {
+                if (side.getAxis().isHorizontal()) {
+                    hasHorizontalSide = true;
                 } else {
-                    stage = Math.max(3, (int) (fluidScale * (stages - 1)));
-                }
-                int glow = MekanismRenderer.calculateGlowLight(light, fluidStack);
-                int color = MekanismRenderer.getColorARGB(fluidStack, fluidScale);
-                List<String> connectionContents = new ArrayList<>();
-                Model3D model = getModel(null, fluidStack, stage);
-                VertexConsumer buffer = renderer.getBuffer(Sheets.translucentCullBlockSheet());
-                for (Direction side : EnumUtils.DIRECTIONS) {
-                    ConnectionType connectionType = pipe.getConnectionType(side);
-                    if (connectionType == ConnectionType.NORMAL) {
-                        //If it is normal we need to render it manually so to have it be the correct dimensions instead of too narrow
-                        MekanismRenderer.renderObject(getModel(side, fluidStack, stage), matrix, buffer, color, glow, overlayLight, FaceDisplay.FRONT);
-                    } else if (connectionType != ConnectionType.NONE) {
-                        connectionContents.add(side.getSerializedName() + connectionType.getSerializedName().toUpperCase(Locale.ROOT));
-                    }
-                    if (model != null) {
-                        //Render the side if there is no connection on that side, or it is a vertical connection, and we are not full
-                        model.setSideRender(side, connectionType == ConnectionType.NONE || (side.getAxis().isVertical() && stage != stages - 1));
-                    }
-                }
-                MekanismRenderer.renderObject(model, matrix, buffer, MekanismRenderer.getColorARGB(fluidStack, fluidScale), glow, overlayLight, FaceDisplay.FRONT);
-                if (!connectionContents.isEmpty()) {
-                    matrix.pushPose();
-                    matrix.translate(0.5, 0.5, 0.5);
-                    renderModel(tile, matrix, buffer, MekanismRenderer.getRed(color), MekanismRenderer.getGreen(color), MekanismRenderer.getBlue(color),
-                            MekanismRenderer.getAlpha(color), glow, overlayLight, MekanismRenderer.getFluidTexture(fluidStack, FluidType.STILL), connectionContents);
-                    matrix.popPose();
+                    verticalSides++;
                 }
             }
+        }
+        //Render the base part if there is a horizontal connection, or we only have one vertical connection
+        boolean renderBase = hasHorizontalSide || verticalSides < 2;
+        Model3D model = getModel(fluidStack, stage, renderBase);
+        for (Direction side : EnumUtils.DIRECTIONS) {
+            //Render the side if there is no connection on that side, or it is a vertical connection, we have at least one side, and we are not full
+            // We also render for push and pull as they use slightly smaller fill models which then means we would have
+            // small gaps if we didn't render
+            model.setSideRender(side, renderSides[side.ordinal()] || (side.getAxis().isVertical() && renderBase && stage != stages - 1));
+        }
+        MekanismRenderer.renderObject(model, matrix, buffer, color, glow, overlayLight, FaceDisplay.FRONT, camera, tile.getBlockPos());
+        if (!connectionContents.isEmpty()) {
+            matrix.pushPose();
+            matrix.translate(0.5, 0.5, 0.5);
+            renderModel(tile, matrix, buffer, MekanismRenderer.getRed(color), MekanismRenderer.getGreen(color), MekanismRenderer.getBlue(color),
+                    MekanismRenderer.getAlpha(color), glow, overlayLight, MekanismRenderer.getFluidTexture(fluidStack, MekanismRenderer.FluidTextureType.STILL), connectionContents);
+            matrix.popPose();
         }
     }
 
@@ -98,88 +111,74 @@ public class EvoRenderMechanicalPipe extends RenderTransmitterBase<EvoTileEntity
         return ProfilerConstants.MECHANICAL_PIPE;
     }
 
-    @Nullable
-    private Model3D getModel(@Nullable Direction side, FluidStack fluid, int stage) {
-        if (fluid.isEmpty()) {
-            return null;
+    @Override
+    protected boolean shouldRenderTransmitter(EvoTileEntityMechanicalPipe tile, Vec3 camera) {
+        MechanicalPipe pipe = tile.getTransmitter();
+        if (pipe.hasTransmitterNetwork()) {
+            FluidNetwork network = pipe.getTransmitterNetwork();
+            return !network.lastFluid.isEmpty() && !network.fluidTank.isEmpty() && network.currentScale > 0;
         }
-        int sideOrdinal = side == null ? 6 : side.ordinal();
-        FluidRenderMap<Int2ObjectMap<Model3D>> cachedFluids;
-        if (cachedLiquids.containsKey(sideOrdinal)) {
-            cachedFluids = cachedLiquids.get(sideOrdinal);
-            if (cachedFluids.containsKey(fluid) && cachedFluids.get(fluid).containsKey(stage)) {
-                return cachedFluids.get(fluid).get(stage);
-            }
+        return false;
+    }
+
+    private Model3D getModel(FluidStack fluid, int stage, boolean hasSides) {
+        return getModel(null, fluid, stage, hasSides);
+    }
+
+    private Model3D getModel(Direction side, FluidStack fluid, int stage) {
+        return getModel(side, fluid, stage, false);
+    }
+
+    private Model3D getModel(@Nullable Direction side, FluidStack fluid, int stage, boolean renderBase) {
+        int sideOrdinal;
+        if (side == null) {
+            sideOrdinal = renderBase ? 7 : 6;
         } else {
-            cachedLiquids.put(sideOrdinal, cachedFluids = new FluidRenderMap<>());
+            sideOrdinal = side.ordinal();
         }
-        Model3D model = new Model3D();
-        model.setTexture(MekanismRenderer.getFluidTexture(fluid, FluidType.STILL));
-        if (side != null) {
-            model.setSideRender(side, false);
-            model.setSideRender(side.getOpposite(), false);
+        return cachedLiquids.computeIfAbsent(sideOrdinal, s -> new FluidRenderMap<>())
+                .computeIfAbsent(fluid, f -> new Int2ObjectOpenHashMap<>())
+                .computeIfAbsent(stage, s -> {
+                    float stageRatio = (s / (float) stages) * height;
+                    Model3D model = new Model3D()
+                            .setTexture(MekanismRenderer.getFluidTexture(fluid, MekanismRenderer.FluidTextureType.STILL));
+                    if (side == null) {
+                        float min;
+                        float max;
+                        if (renderBase) {
+                            min = 0.25F + offset;
+                            max = 0.75F - offset;
+                        } else {
+                            min = 0.5F - stageRatio / 2;
+                            max = 0.5F + stageRatio / 2;
+                        }
+                        return model.xBounds(min, max)
+                                .yBounds(0.25F + offset, 0.25F + offset + stageRatio)
+                                .zBounds(min, max);
+                    }
+                    model.setSideRender(side, false)
+                            .setSideRender(side.getOpposite(), false);
+                    if (side.getAxis().isHorizontal()) {
+                        model.yBounds(0.25F + offset, 0.25F + offset + stageRatio);
+                        if (side.getAxis() == Direction.Axis.Z) {
+                            return setHorizontalBounds(side, model::xBounds, model::zBounds);
+                        }
+                        return setHorizontalBounds(side, model::zBounds, model::xBounds);
+                    }
+                    float min = 0.5F - stageRatio / 2;
+                    float max = 0.5F + stageRatio / 2;
+                    model.xBounds(min, max)
+                            .zBounds(min, max);
+                    return side == Direction.DOWN ? model.yBounds(0, 0.25F + offset)
+                            : model.yBounds(0.25F + offset + stageRatio, 1);//Up
+                });
+    }
+
+    private static Model3D setHorizontalBounds(Direction horizontal, Model3D.ModelBoundsSetter axisBased, Model3D.ModelBoundsSetter directionBased) {
+        axisBased.set(0.25F + offset, 0.75F - offset);
+        if (horizontal.getAxisDirection() == Direction.AxisDirection.POSITIVE) {
+            return directionBased.set(0.75F - offset, 1);
         }
-        float stageRatio = (stage / (float) stages) * height;
-        switch (sideOrdinal) {
-            case 0 -> {
-                model.minX = 0.5F - stageRatio / 2;
-                model.minY = 0;
-                model.minZ = 0.5F - stageRatio / 2;
-                model.maxX = 0.5F + stageRatio / 2;
-                model.maxY = 0.25F + offset;
-                model.maxZ = 0.5F + stageRatio / 2;
-            }
-            case 1 -> {
-                model.minX = 0.5F - stageRatio / 2;
-                model.minY = 0.25F - offset + stageRatio;
-                model.minZ = 0.5F - stageRatio / 2;
-                model.maxX = 0.5F + stageRatio / 2;
-                model.maxY = 1;
-                model.maxZ = 0.5F + stageRatio / 2;
-            }
-            case 2 -> {
-                model.minX = 0.25F + offset;
-                model.minY = 0.25F + offset;
-                model.minZ = 0;
-                model.maxX = 0.75F - offset;
-                model.maxY = 0.25F + offset + stageRatio;
-                model.maxZ = 0.25F + offset;
-            }
-            case 3 -> {
-                model.minX = 0.25F + offset;
-                model.minY = 0.25F + offset;
-                model.minZ = 0.75F - offset;
-                model.maxX = 0.75F - offset;
-                model.maxY = 0.25F + offset + stageRatio;
-                model.maxZ = 1;
-            }
-            case 4 -> {
-                model.minX = 0;
-                model.minY = 0.25F + offset;
-                model.minZ = 0.25F + offset;
-                model.maxX = 0.25F + offset;
-                model.maxY = 0.25F + offset + stageRatio;
-                model.maxZ = 0.75F - offset;
-            }
-            case 5 -> {
-                model.minX = 0.75F - offset;
-                model.minY = 0.25F + offset;
-                model.minZ = 0.25F + offset;
-                model.maxX = 1;
-                model.maxY = 0.25F + offset + stageRatio;
-                model.maxZ = 0.75F - offset;
-            }
-            case 6 -> {
-                //Null side
-                model.minX = 0.25F + offset;
-                model.minY = 0.25F + offset;
-                model.minZ = 0.25F + offset;
-                model.maxX = 0.75F - offset;
-                model.maxY = 0.25F + offset + stageRatio;
-                model.maxZ = 0.75F - offset;
-            }
-        }
-        cachedFluids.computeIfAbsent(fluid, f -> new Int2ObjectOpenHashMap<>()).putIfAbsent(stage, model);
-        return model;
+        return directionBased.set(0, 0.25F + offset);
     }
 }

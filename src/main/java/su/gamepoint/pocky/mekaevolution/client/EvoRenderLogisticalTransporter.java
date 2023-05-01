@@ -10,14 +10,12 @@ import mekanism.client.render.MekanismRenderer.Model3D.SpriteInfo;
 import mekanism.client.render.RenderResizableCuboid.FaceDisplay;
 import mekanism.client.render.transmitter.RenderTransmitterBase;
 import mekanism.common.base.ProfilerConstants;
-import mekanism.common.content.network.transmitter.DiversionTransporter;
-import mekanism.common.content.network.transmitter.LogisticalTransporterBase;
 import mekanism.common.content.transporter.TransporterStack;
 import mekanism.common.item.ItemConfigurator;
 import mekanism.common.lib.inventory.HashedItem;
-import mekanism.common.util.EnumUtils;
 import mekanism.common.util.MekanismUtils;
 import net.minecraft.client.Minecraft;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.Sheets;
 import net.minecraft.client.renderer.blockentity.BlockEntityRendererProvider;
@@ -34,9 +32,7 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.BlockHitResult;
 import net.minecraft.world.phys.HitResult.Type;
-import su.gamepoint.pocky.mekaevolution.common.block.transmitter.logisticaltransporter.LTTier;
-import su.gamepoint.pocky.mekaevolution.common.block.transmitter.logisticaltransporter.EvoTileEntityLogisticalTransporterBase;
-import su.gamepoint.pocky.mekaevolution.common.block.transmitter.logisticaltransporter.EvoTransporterUtils;
+import su.gamepoint.pocky.mekaevolution.common.block.transmitter.logisticaltransporter.*;
 
 import javax.annotation.Nullable;
 import javax.annotation.ParametersAreNonnullByDefault;
@@ -49,11 +45,16 @@ import java.util.*;
 public class EvoRenderLogisticalTransporter extends RenderTransmitterBase<EvoTileEntityLogisticalTransporterBase> {
 
     private static final Map<Direction, Model3D> cachedOverlays = new EnumMap<>(Direction.class);
+    @Nullable
     private static SpriteInfo gunpowderIcon;
+    @Nullable
     private static SpriteInfo torchOffIcon;
+    @Nullable
     private static SpriteInfo torchOnIcon;
     private final ModelTransporterBox modelBox;
     private final LazyItemRenderer itemRenderer = new LazyItemRenderer();
+
+    private static final int DIVERSION_OVERLAY_ARGB = MekanismRenderer.getColorARGB(255, 255, 255, 0.8F);
 
     public EvoRenderLogisticalTransporter(BlockEntityRendererProvider.Context context) {
         super(context);
@@ -70,7 +71,7 @@ public class EvoRenderLogisticalTransporter extends RenderTransmitterBase<EvoTil
     @Override
     protected void render(EvoTileEntityLogisticalTransporterBase tile, float partialTick, PoseStack matrix, MultiBufferSource renderer, int light, int overlayLight,
                           ProfilerFiller profiler) {
-        LogisticalTransporterBase transporter = tile.getTransmitter();
+        EvoLogisticalTransporterBase transporter = tile.getTransmitter();
         Collection<TransporterStack> inTransit = transporter.getTransit();
         BlockPos pos = tile.getBlockPos();
         if (!inTransit.isEmpty()) {
@@ -85,15 +86,15 @@ public class EvoRenderLogisticalTransporter extends RenderTransmitterBase<EvoTil
                 matrix.pushPose();
                 matrix.translate(stackPos[0], stackPos[1], stackPos[2]);
                 matrix.scale(0.75F, 0.75F, 0.75F);
-                itemRenderer.renderAsStack(matrix, renderer, stack.itemStack);
+                itemRenderer.renderAsStack(matrix, renderer, stack.itemStack, light);
                 matrix.popPose();
                 if (stack.color != null) {
-                    modelBox.render(matrix, renderer, MekanismRenderer.FULL_LIGHT, overlayLight, stackPos[0], stackPos[1], stackPos[2], stack.color);
+                    modelBox.render(matrix, renderer, LightTexture.FULL_BRIGHT, overlayLight, stackPos[0], stackPos[1], stackPos[2], stack.color);
                 }
             }
             matrix.popPose();
         }
-        if (transporter instanceof DiversionTransporter diversionTransporter) {
+        if (transporter instanceof EvoDiversionTransporter diversionTransporter) {
             Player player = Minecraft.getInstance().player;
             ItemStack itemStack = player.getInventory().getSelected();
             if (!itemStack.isEmpty() && itemStack.getItem() instanceof ItemConfigurator) {
@@ -104,7 +105,7 @@ public class EvoRenderLogisticalTransporter extends RenderTransmitterBase<EvoTil
                     matrix.scale(0.5F, 0.5F, 0.5F);
                     matrix.translate(0.5, 0.5, 0.5);
                     MekanismRenderer.renderObject(getOverlayModel(diversionTransporter, side), matrix, renderer.getBuffer(Sheets.translucentCullBlockSheet()),
-                            MekanismRenderer.getColorARGB(255, 255, 255, 0.8F), MekanismRenderer.FULL_LIGHT, overlayLight, FaceDisplay.FRONT);
+                            DIVERSION_OVERLAY_ARGB, LightTexture.FULL_BRIGHT, overlayLight, FaceDisplay.FRONT, getCamera());
                     matrix.popPose();
                 }
             }
@@ -132,25 +133,18 @@ public class EvoRenderLogisticalTransporter extends RenderTransmitterBase<EvoTil
         return reducedTransit;
     }
 
-    private Model3D getOverlayModel(DiversionTransporter transporter, Direction side) {
+    private Model3D getOverlayModel(EvoDiversionTransporter transporter, Direction side) {
         //Get the model or set it up if needed
-        Model3D model = cachedOverlays.computeIfAbsent(side, face -> {
-            Model3D m = new Model3D();
-            MekanismRenderer.prepSingleFaceModelSize(m, face);
-            for (Direction direction : EnumUtils.DIRECTIONS) {
-                m.setSideRender(direction, direction == face);
-            }
-            return m;
-        });
-        // and then figure out which texture we need to use
-        SpriteInfo icon = switch (transporter.modes[side.ordinal()]) {
+        Model3D model = cachedOverlays.computeIfAbsent(side, face -> new Model3D()
+                .prepSingleFaceModelSize(face)
+                .setSideRender(direction -> direction == face)
+        );
+        //set the proper side to the texture we need to use
+        return model.setTexture(side, switch (transporter.modes[side.ordinal()]) {
             case DISABLED -> gunpowderIcon;
             case HIGH -> torchOnIcon;
             case LOW -> torchOffIcon;
-        };
-        // and set that proper side to that texture
-        model.setTexture(side, icon);
-        return model;
+        });
     }
 
     private static class TransportInformation {
@@ -202,13 +196,13 @@ public class EvoRenderLogisticalTransporter extends RenderTransmitterBase<EvoTil
             entityItem.setPos(pos.getX() + 0.5, pos.getY() + 0.5, pos.getZ() + 0.5);
         }
 
-        private void renderAsStack(PoseStack matrix, MultiBufferSource buffer, ItemStack stack) {
+        private void renderAsStack(PoseStack matrix, MultiBufferSource buffer, ItemStack stack, int light) {
             if (entityItem != null) {
                 if (renderer == null) {
                     renderer = Minecraft.getInstance().getEntityRenderDispatcher().getRenderer(entityItem);
                 }
                 entityItem.setItem(stack);
-                renderer.render(entityItem, 0, 0, matrix, buffer, MekanismRenderer.FULL_LIGHT);
+                renderer.render(entityItem, 0, 0, matrix, buffer, light);
             }
         }
     }

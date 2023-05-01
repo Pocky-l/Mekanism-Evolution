@@ -2,20 +2,28 @@ package su.gamepoint.pocky.mekaevolution.client.energycube;
 
 import com.mojang.blaze3d.vertex.PoseStack;
 import com.mojang.math.Vector3f;
-import mekanism.client.MekanismClient;
-import mekanism.client.model.ModelEnergyCube;
+import mekanism.api.NBTConstants;
+import mekanism.api.RelativeSide;
 import mekanism.client.render.MekanismRenderer;
 import mekanism.client.render.item.MekanismISTER;
+import mekanism.common.lib.transmitter.TransmissionType;
 import mekanism.common.tier.EnergyCubeTier;
+import mekanism.common.tile.component.config.DataType;
+import mekanism.common.util.EnumUtils;
+import mekanism.common.util.ItemDataUtils;
 import mekanism.common.util.StorageUtils;
+import net.minecraft.client.renderer.LightTexture;
 import net.minecraft.client.renderer.MultiBufferSource;
 import net.minecraft.client.renderer.block.model.ItemTransforms;
+import net.minecraft.nbt.CompoundTag;
+import net.minecraft.nbt.Tag;
 import net.minecraft.server.packs.resources.ResourceManager;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.model.data.ModelData;
+import org.jetbrains.annotations.NotNull;
 import su.gamepoint.pocky.mekaevolution.common.block.storages.energycube.ECTier;
 import su.gamepoint.pocky.mekaevolution.common.block.storages.energycube.EvoItemBlockEnergyCube;
-
-import javax.annotation.Nonnull;
+import su.gamepoint.pocky.mekaevolution.common.block.storages.energycube.EvoTileEntityEnergyCube;
 
 /**
  * @author Dudko Roman
@@ -23,35 +31,50 @@ import javax.annotation.Nonnull;
 public class EvoRenderEnergyCubeItem extends MekanismISTER {
 
     public static final EvoRenderEnergyCubeItem RENDERER = new EvoRenderEnergyCubeItem();
-    private EvoModelEnergyCube energyCube;
-    private EvoModelEnergyCube.ModelEnergyCore core;
+    private EvoModelEnergyCore core;
 
     @Override
-    public void onResourceManagerReload(@Nonnull ResourceManager resourceManager) {
-        energyCube = new EvoModelEnergyCube(getEntityModels());
-        core = new EvoModelEnergyCube.ModelEnergyCore(getEntityModels());
+    public void onResourceManagerReload(@NotNull ResourceManager resourceManager) {
+        core = new EvoModelEnergyCore(getEntityModels());
     }
 
     @Override
-    public void renderByItem(@Nonnull ItemStack stack, @Nonnull ItemTransforms.TransformType transformType, @Nonnull PoseStack matrix, @Nonnull MultiBufferSource renderer, int light, int overlayLight) {
+    public void renderByItem(@NotNull ItemStack stack, @NotNull ItemTransforms.TransformType transformType, @NotNull PoseStack matrix, @NotNull MultiBufferSource renderer, int light,
+                             int overlayLight) {
         EnergyCubeTier tier = ((EvoItemBlockEnergyCube) stack.getItem()).getTier();
-        matrix.pushPose();
-        matrix.translate(0.5, 0.5, 0.5);
-        matrix.mulPose(Vector3f.ZP.rotationDegrees(180));
-        matrix.pushPose();
-        matrix.translate(0, -1, 0);
-        //TODO: Instead of having this be a thing, make it do it from model like the block does?
-        energyCube.render(matrix, renderer, light, overlayLight, ECTier.getColor(tier), true, stack.hasFoil());
-        energyCube.renderSidesBatched(stack, tier, matrix, renderer, light, overlayLight, stack.hasFoil());
-        matrix.popPose();
+
+        EvoTileEntityEnergyCube.CubeSideState[] sideStates = new EvoTileEntityEnergyCube.CubeSideState[EnumUtils.SIDES.length];
+        CompoundTag configData = ItemDataUtils.getDataMapIfPresent(stack);
+        if (configData != null && configData.contains(NBTConstants.COMPONENT_CONFIG, Tag.TAG_COMPOUND)) {
+            CompoundTag sideConfig = configData.getCompound(NBTConstants.COMPONENT_CONFIG).getCompound(NBTConstants.CONFIG + TransmissionType.ENERGY.ordinal());
+            //TODO: Maybe improve on this, but for now this is a decent way of making it not have disabled sides show
+            for (RelativeSide side : EnumUtils.SIDES) {
+                DataType dataType = DataType.byIndexStatic(sideConfig.getInt(NBTConstants.SIDE + side.ordinal()));
+                EvoTileEntityEnergyCube.CubeSideState state = EvoTileEntityEnergyCube.CubeSideState.INACTIVE;
+                if (dataType != DataType.NONE) {
+                    state = dataType.canOutput() ? EvoTileEntityEnergyCube.CubeSideState.ACTIVE_LIT : EvoTileEntityEnergyCube.CubeSideState.ACTIVE_UNLIT;
+                }
+                sideStates[side.ordinal()] = state;
+            }
+        } else {
+            for (RelativeSide side : EnumUtils.SIDES) {
+                sideStates[side.ordinal()] = tier == EnergyCubeTier.CREATIVE || side == RelativeSide.FRONT ? EvoTileEntityEnergyCube.CubeSideState.ACTIVE_LIT : EvoTileEntityEnergyCube.CubeSideState.ACTIVE_UNLIT;
+            }
+        }
+        ModelData modelData = ModelData.builder().with(EvoTileEntityEnergyCube.SIDE_STATE_PROPERTY, sideStates).build();
+        renderBlockItem(stack, transformType, matrix, renderer, light, overlayLight, modelData);
         double energyPercentage = StorageUtils.getStoredEnergyFromNBT(stack).divideToLevel(ECTier.getMaxEnergy(tier));
         if (energyPercentage > 0) {
+            float ticks = MekanismRenderer.getPartialTick();
+            float scaledTicks = 4 * ticks;
+            matrix.pushPose();
+            matrix.translate(0.5, 0.5, 0.5);
             matrix.scale(0.4F, 0.4F, 0.4F);
-            matrix.translate(0, Math.sin(Math.toRadians(3 * MekanismClient.ticksPassed)) / 7, 0);
-            matrix.mulPose(Vector3f.YP.rotationDegrees(4 * MekanismClient.ticksPassed));
-            matrix.mulPose(EvoRenderEnergyCube.coreVec.rotationDegrees(36F + 4 * MekanismClient.ticksPassed));
-            core.render(matrix, renderer, MekanismRenderer.FULL_LIGHT, overlayLight, ECTier.getColor(tier), (float) energyPercentage);
+            matrix.translate(0, Math.sin(Math.toRadians(3 * ticks)) / 7, 0);
+            matrix.mulPose(Vector3f.YP.rotationDegrees(scaledTicks));
+            matrix.mulPose(EvoRenderEnergyCube.coreVec.rotationDegrees(36F + scaledTicks));
+            core.render(matrix, renderer, LightTexture.FULL_BRIGHT, overlayLight, ECTier.getColor(tier), (float) energyPercentage);
+            matrix.popPose();
         }
-        matrix.popPose();
     }
 }

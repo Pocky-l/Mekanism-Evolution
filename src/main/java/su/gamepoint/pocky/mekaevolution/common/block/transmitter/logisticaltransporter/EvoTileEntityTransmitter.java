@@ -14,7 +14,7 @@ public abstract class EvoTileEntityTransmitter extends TileEntityTransmitter {
         super(blockProvider, pos, state);
     }
 
-    public static void moreTickServer(Level level, BlockPos blockPos, BlockState blockState, EvoTileEntityLogisticalTransporter evoTileEntityLogisticalTransporter) {
+    public static void evoTickServer(Level level, BlockPos blockPos, BlockState blockState, EvoTileEntityLogisticalTransporter evoTileEntityLogisticalTransporter) {
         evoTileEntityLogisticalTransporter.onUpdateServer();
     }
 }

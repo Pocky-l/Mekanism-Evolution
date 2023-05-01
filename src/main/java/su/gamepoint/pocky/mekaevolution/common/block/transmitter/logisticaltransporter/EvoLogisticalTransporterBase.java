@@ -181,7 +181,7 @@ public class EvoLogisticalTransporterBase extends LogisticalTransporterBase {
                     needsSync.clear();
 
                     // Finally, mark chunk for save
-                    WorldUtils.saveChunk(getTransmitterTile());
+                    getTransmitterTile().markForSave();
                 }
             }
         }
@@ -192,14 +192,14 @@ public class EvoLogisticalTransporterBase extends LogisticalTransporterBase {
         if (noPath && !stack.calculateIdle(this)) {
             TransporterUtils.drop(this, stack);
             return false;
-        } else {
-            this.needsSync.put(stackId, stack);
-            if (from != null) {
-                stack.originalLocation = from;
-            }
-
-            return true;
         }
+
+        //Only add to needsSync if true is being returned; otherwise it gets added to deletes
+        needsSync.put(stackId, stack);
+        if (from != null) {
+            stack.originalLocation = from;
+        }
+        return true;
     }
 
     private void entityEntering(TransporterStack stack, int progress) {

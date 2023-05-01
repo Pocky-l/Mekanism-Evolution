@@ -1,5 +1,6 @@
 package su.gamepoint.pocky.mekaevolution.common.block.transmitter.logisticaltransporter;
 
+import mekanism.api.NBTConstants;
 import mekanism.api.providers.IBlockProvider;
 import mekanism.api.text.EnumColor;
 import mekanism.common.MekanismLang;
@@ -50,13 +51,13 @@ public class EvoLogisticalTransporter extends EvoLogisticalTransporterBase {
         PathfinderCache.onChanged(this.getTransmitterNetwork());
         this.getTransmitterTile().sendUpdatePacket();
         EnumColor color = this.getColor();
-        player.sendMessage(MekanismUtils.logFormat(MekanismLang.TOGGLE_COLOR.translate(color == null ? MekanismLang.NONE : color.getColoredName())), Util.NIL_UUID);
+        player.sendSystemMessage(MekanismUtils.logFormat(MekanismLang.TOGGLE_COLOR.translate(color == null ? MekanismLang.NONE : color.getColoredName())));
         return InteractionResult.SUCCESS;
     }
 
     public InteractionResult onRightClick(Player player, Direction side) {
         EnumColor color = this.getColor();
-        player.sendMessage(MekanismUtils.logFormat(MekanismLang.CURRENT_COLOR.translate(color == null ? MekanismLang.NONE : color.getColoredName())), Util.NIL_UUID);
+        player.sendSystemMessage(MekanismUtils.logFormat(MekanismLang.CURRENT_COLOR.translate(color == null ? MekanismLang.NONE : color.getColoredName())));
         return super.onRightClick(player, side);
     }
 
@@ -82,23 +83,23 @@ public class EvoLogisticalTransporter extends EvoLogisticalTransporterBase {
 
     protected void readFromNBT(CompoundTag nbtTags) {
         super.readFromNBT(nbtTags);
-        NBTUtils.setEnumIfPresent(nbtTags, "color", TransporterUtils::readColor, this::setColor);
+        NBTUtils.setEnumIfPresent(nbtTags, NBTConstants.COLOR, TransporterUtils::readColor, this::setColor);
     }
 
     public void writeToNBT(CompoundTag nbtTags) {
         super.writeToNBT(nbtTags);
-        nbtTags.putInt("color", TransporterUtils.getColorIndex(this.getColor()));
+        nbtTags.putInt(NBTConstants.COLOR, TransporterUtils.getColorIndex(this.getColor()));
     }
 
     @Nonnull
     public CompoundTag getReducedUpdateTag(CompoundTag updateTag) {
         updateTag = super.getReducedUpdateTag(updateTag);
-        updateTag.putInt("color", TransporterUtils.getColorIndex(this.getColor()));
+        updateTag.putInt(NBTConstants.COLOR, TransporterUtils.getColorIndex(this.getColor()));
         return updateTag;
     }
 
     public void handleUpdateTag(@Nonnull CompoundTag tag) {
         super.handleUpdateTag(tag);
-        NBTUtils.setEnumIfPresent(tag, "color", TransporterUtils::readColor, this::setColor);
+        NBTUtils.setEnumIfPresent(tag, NBTConstants.COLOR, TransporterUtils::readColor, this::setColor);
     }
 }
