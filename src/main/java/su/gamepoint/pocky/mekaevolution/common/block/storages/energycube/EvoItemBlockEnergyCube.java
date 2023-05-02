@@ -19,6 +19,8 @@ import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.api.distmarker.OnlyIn;
 import net.minecraftforge.client.IItemRenderProperties;
 import su.gamepoint.pocky.mekaevolution.client.energycube.EvoRenderEnergyCubeItem;
 
@@ -36,6 +38,7 @@ public class EvoItemBlockEnergyCube extends ItemBlockTooltip<EvoBlockEnergyCube>
     }
 
     @Override
+    @OnlyIn(Dist.CLIENT)
     public void initializeClient(@Nonnull Consumer<IItemRenderProperties> consumer) {
         consumer.accept(new RenderPropertiesProvider.MekRenderProperties(EvoRenderEnergyCubeItem.RENDERER));
     }
