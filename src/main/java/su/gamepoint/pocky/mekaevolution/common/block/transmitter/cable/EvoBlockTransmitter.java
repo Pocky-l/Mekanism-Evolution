@@ -31,7 +31,6 @@ import net.minecraft.world.phys.shapes.CollisionContext;
 import net.minecraft.world.phys.shapes.EntityCollisionContext;
 import net.minecraft.world.phys.shapes.VoxelShape;
 import org.jetbrains.annotations.NotNull;
-import su.gamepoint.pocky.mekaevolution.common.block.transmitter.logisticaltransporter.EvoTileEntityTransmitter;
 
 import javax.annotation.Nullable;
 import java.util.ArrayList;
