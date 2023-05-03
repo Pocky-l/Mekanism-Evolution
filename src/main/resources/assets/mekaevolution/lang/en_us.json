@@ -22,5 +22,10 @@
   "container.mekaevolution.absolute_energy_cube": "Absolute Energy Cube",
   "container.mekaevolution.supreme_energy_cube": "Supreme Energy Cube",
   "container.mekaevolution.cosmic_energy_cube": "Cosmic Energy Cube",
-  "container.mekaevolution.infinite_energy_cube": "Infinite Energy Cube"
+  "container.mekaevolution.infinite_energy_cube": "Infinite Energy Cube",
+
+  "item.mekaevolution.qio_drive_absolute": "Absolute QIO Drive",
+  "item.mekaevolution.qio_drive_supreme": "Supreme QIO Drive",
+  "item.mekaevolution.qio_drive_cosmic": "Cosmic QIO Drive",
+  "item.mekaevolution.qio_drive_infinite": "Infinite QIO Drive"
 }

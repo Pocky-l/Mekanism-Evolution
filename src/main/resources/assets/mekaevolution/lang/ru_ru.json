@@ -22,5 +22,10 @@
   "container.mekaevolution.absolute_energy_cube": "Абсолютный энергетический куб",
   "container.mekaevolution.supreme_energy_cube": "Высший энергетический куб",
   "container.mekaevolution.cosmic_energy_cube": "Космический энергетический куб",
-  "container.mekaevolution.infinite_energy_cube": "Бесконечный энергетический куб"
+  "container.mekaevolution.infinite_energy_cube": "Бесконечный энергетический куб",
+
+  "item.mekaevolution.qio_drive_absolute": "Абсолютная QIO Ячейка",
+  "item.mekaevolution.qio_drive_supreme": "Высшая QIO Ячейка",
+  "item.mekaevolution.qio_drive_cosmic": "Космическая QIO Ячейка",
+  "item.mekaevolution.qio_drive_infinite": "Бесконечная QIO Ячейка"
 }

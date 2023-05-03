@@ -11,6 +11,7 @@ import su.gamepoint.pocky.mekaevolution.client.events.ClientTick;
 import su.gamepoint.pocky.mekaevolution.config.EvoConfig;
 import su.gamepoint.pocky.mekaevolution.registers.BlockRegister;
 import su.gamepoint.pocky.mekaevolution.registers.EvoContainerTypes;
+import su.gamepoint.pocky.mekaevolution.registers.ItemRegister;
 import su.gamepoint.pocky.mekaevolution.registers.TileEntityTypes;
 
 @Mod(MekanismEvolutionMod.MODID)
@@ -29,6 +30,7 @@ public class MekanismEvolutionMod {
         MekanismConfigHelper.registerConfig(modContainer, config);
 
         BlockRegister.REGISTRY_BLOCK.register(eventBus);
+        ItemRegister.REGISTRY_ITEM.register(eventBus);
         TileEntityTypes.TILE_ENTITY_TYPES.register(eventBus);
         EvoContainerTypes.CONTAINER_TYPES.register(eventBus);
 
