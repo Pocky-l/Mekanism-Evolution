@@ -29,8 +29,8 @@
   "item.mekaevolution.qio_drive_cosmic": "Космическая QIO Ячейка",
   "item.mekaevolution.qio_drive_infinite": "Бесконечная QIO Ячейка",
 
-  "item.mekanism.absolute_control_circuit": "Абсолютная схема управления",
-  "item.mekanism.supreme_control_circuit": "Высшая схема управления",
-  "item.mekanism.cosmic_control_circuit": "Космическая схема управления",
-  "item.mekanism.infinite_control_circuit": "Бесконечная схема управления"
+  "item.mekaevolution.absolute_control_circuit": "Абсолютная схема управления",
+  "item.mekaevolution.supreme_control_circuit": "Высшая схема управления",
+  "item.mekaevolution.cosmic_control_circuit": "Космическая схема управления",
+  "item.mekaevolution.infinite_control_circuit": "Бесконечная схема управления"
 }

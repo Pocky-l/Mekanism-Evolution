@@ -1,0 +1,19 @@
+{
+  "type": "mekanism:mek_data",
+  "key": {
+    "#": {
+      "item": "mekanism:pellet_antimatter"
+    },
+    "I": {
+      "item": "mekaevolution:cosmic_control_circuit"
+    }
+  },
+  "pattern": [
+    "#I#",
+    "I#I",
+    "#I#"
+  ],
+  "result": {
+    "item": "mekaevolution:infinite_control_circuit"
+  }
+}
