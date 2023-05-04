@@ -27,5 +27,10 @@
   "item.mekanism.qio_drive_absolute": "Абсолютна QIO Ячейка",
   "item.mekanism.qio_drive_supreme": "Вища QIO Ячейка",
   "item.mekanism.qio_drive_cosmic": "Космічна QIO Ячейка",
-  "item.mekanism.qio_drive_infinite": "Необмежена QIO Ячейка"
+  "item.mekanism.qio_drive_infinite": "Необмежена QIO Ячейка",
+
+  "item.mekanism.absolute_control_circuit": "Абсолютна схема керування",
+  "item.mekanism.supreme_control_circuit": "Вища схема керування",
+  "item.mekanism.cosmic_control_circuit": "Космічна схема керування",
+  "item.mekanism.infinite_control_circuit": "Необмежена схема керування"
 }

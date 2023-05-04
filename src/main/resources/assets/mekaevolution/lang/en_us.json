@@ -27,5 +27,10 @@
   "item.mekaevolution.qio_drive_absolute": "Absolute QIO Drive",
   "item.mekaevolution.qio_drive_supreme": "Supreme QIO Drive",
   "item.mekaevolution.qio_drive_cosmic": "Cosmic QIO Drive",
-  "item.mekaevolution.qio_drive_infinite": "Infinite QIO Drive"
+  "item.mekaevolution.qio_drive_infinite": "Infinite QIO Drive",
+
+  "item.mekanism.absolute_control_circuit": "Absolute Control Circuit",
+  "item.mekanism.supreme_control_circuit": "Supreme Control Circuit",
+  "item.mekanism.cosmic_control_circuit": "Cosmic Control Circuit",
+  "item.mekanism.infinite_control_circuit": "Infinite Control Circuit"
 }
