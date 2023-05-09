@@ -32,5 +32,7 @@
   "item.mekaevolution.absolute_control_circuit": "Абсолютная схема управления",
   "item.mekaevolution.supreme_control_circuit": "Высшая схема управления",
   "item.mekaevolution.cosmic_control_circuit": "Космическая схема управления",
-  "item.mekaevolution.infinite_control_circuit": "Бесконечная схема управления"
+  "item.mekaevolution.infinite_control_circuit": "Бесконечная схема управления",
+
+  "item.mekaevolution.plasma_pickaxe": "Плазменная кирка"
 }

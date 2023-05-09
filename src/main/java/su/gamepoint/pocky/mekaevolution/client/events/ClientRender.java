@@ -8,17 +8,17 @@ import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.EntityRenderersEvent;
 import net.minecraftforge.client.event.RegisterClientReloadListenersEvent;
 import net.minecraftforge.client.event.TextureStitchEvent;
-import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import su.gamepoint.pocky.mekaevolution.MekanismEvolutionMod;
-import su.gamepoint.pocky.mekaevolution.client.energycube.EvoRenderEnergyCube;
-import su.gamepoint.pocky.mekaevolution.client.energycube.EvoRenderEnergyCubeItem;
 import su.gamepoint.pocky.mekaevolution.client.EvoRenderLogisticalTransporter;
 import su.gamepoint.pocky.mekaevolution.client.EvoRenderMechanicalPipe;
 import su.gamepoint.pocky.mekaevolution.client.EvoRenderUniversalCable;
-import su.gamepoint.pocky.mekaevolution.common.block.storages.energycube.ECTier;
+import su.gamepoint.pocky.mekaevolution.client.energycube.EvoRenderEnergyCube;
+import su.gamepoint.pocky.mekaevolution.client.energycube.EvoRenderEnergyCubeItem;
+import su.gamepoint.pocky.mekaevolution.common.item.render.ModelPlasmaPickaxe;
+import su.gamepoint.pocky.mekaevolution.common.item.render.RenderPlasmaPickaxe;
 import su.gamepoint.pocky.mekaevolution.registers.BlockRegister;
 import su.gamepoint.pocky.mekaevolution.registers.TileEntityTypes;
 
@@ -72,6 +72,12 @@ public class ClientRender {
 
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-        ClientRegistrationUtil.registerClientReloadListeners(event, EvoRenderEnergyCubeItem.RENDERER);
+        ClientRegistrationUtil.registerClientReloadListeners(event, EvoRenderEnergyCubeItem.RENDERER,
+                RenderPlasmaPickaxe.RENDERER);
+    }
+
+    @SubscribeEvent
+    public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
+        event.registerLayerDefinition(ModelPlasmaPickaxe.PLASMA_PICKAXE_LAYER, ModelPlasmaPickaxe::createLayerDefinition);
     }
 }

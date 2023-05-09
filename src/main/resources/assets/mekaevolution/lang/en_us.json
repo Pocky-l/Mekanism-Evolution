@@ -32,5 +32,7 @@
   "item.mekaevolution.absolute_control_circuit": "Absolute Control Circuit",
   "item.mekaevolution.supreme_control_circuit": "Supreme Control Circuit",
   "item.mekaevolution.cosmic_control_circuit": "Cosmic Control Circuit",
-  "item.mekaevolution.infinite_control_circuit": "Infinite Control Circuit"
+  "item.mekaevolution.infinite_control_circuit": "Infinite Control Circuit",
+
+  "item.mekaevolution.plasma_pickaxe": "Plasma Pickaxe"
 }

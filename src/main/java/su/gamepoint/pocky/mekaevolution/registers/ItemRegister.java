@@ -5,6 +5,7 @@ import mekanism.common.registration.impl.ItemDeferredRegister;
 import mekanism.common.registration.impl.ItemRegistryObject;
 import net.minecraft.world.item.Item;
 import su.gamepoint.pocky.mekaevolution.MekanismEvolutionMod;
+import su.gamepoint.pocky.mekaevolution.common.item.PlasmaPickaxe;
 import su.gamepoint.pocky.mekaevolution.common.item.EvoItemQIODrive;
 import su.gamepoint.pocky.mekaevolution.common.item.EvoQIODriveTier;
 
@@ -26,6 +27,8 @@ public class ItemRegister {
     public static final ItemRegistryObject<Item> SUPREME_CONTROL_CIRCUIT = registerCircuit("supreme", BaseTier.ADVANCED);
     public static final ItemRegistryObject<Item> COSMIC_CONTROL_CIRCUIT = registerCircuit("cosmic", BaseTier.ELITE);
     public static final ItemRegistryObject<Item> INFINITE_CONTROL_CIRCUIT = registerCircuit("infinite", BaseTier.ULTIMATE);
+
+    public static final ItemRegistryObject<PlasmaPickaxe> ATOMIC_DISASSEMBLER = REGISTRY_ITEM.register("plasma_pickaxe", PlasmaPickaxe::new);
 
     private static ItemRegistryObject<EvoItemQIODrive> registerQIODrive(EvoQIODriveTier tier) {
         return REGISTRY_ITEM.register("qio_drive_" + tier.name().toLowerCase(Locale.ROOT), properties -> new EvoItemQIODrive(tier, properties));
