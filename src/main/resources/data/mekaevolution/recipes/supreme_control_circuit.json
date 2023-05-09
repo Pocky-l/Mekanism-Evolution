@@ -1,0 +1,15 @@
+{
+  "type": "mekanism:metallurgic_infusing",
+  "itemInput": {
+    "ingredient": {
+      "item": "mekaevolution:absolute_control_circuit"
+    }
+  },
+  "chemicalInput": {
+    "amount": 640,
+    "tag": "mekanism:redstone"
+  },
+  "output": {
+    "item": "mekaevolution:supreme_control_circuit"
+  }
+}

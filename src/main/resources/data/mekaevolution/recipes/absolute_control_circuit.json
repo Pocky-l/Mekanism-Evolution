@@ -1,0 +1,15 @@
+{
+  "type": "mekanism:metallurgic_infusing",
+  "itemInput": {
+    "ingredient": {
+      "item": "mekanism:ultimate_control_circuit"
+    }
+  },
+  "chemicalInput": {
+    "amount": 50,
+    "tag": "mekanism:gold"
+  },
+  "output": {
+    "item": "mekaevolution:absolute_control_circuit"
+  }
+}
