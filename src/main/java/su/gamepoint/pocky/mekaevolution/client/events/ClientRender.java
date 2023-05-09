@@ -17,6 +17,8 @@ import su.gamepoint.pocky.mekaevolution.client.energycube.EvoEnergyCubeModelLoad
 import su.gamepoint.pocky.mekaevolution.client.energycube.EvoModelEnergyCore;
 import su.gamepoint.pocky.mekaevolution.client.energycube.EvoRenderEnergyCube;
 import su.gamepoint.pocky.mekaevolution.client.energycube.EvoRenderEnergyCubeItem;
+import su.gamepoint.pocky.mekaevolution.client.item.render.ModelPlasmaPickaxe;
+import su.gamepoint.pocky.mekaevolution.client.item.render.RenderPlasmaPickaxe;
 import su.gamepoint.pocky.mekaevolution.common.block.storages.energycube.ECTier;
 import su.gamepoint.pocky.mekaevolution.registers.BlockRegister;
 import su.gamepoint.pocky.mekaevolution.registers.TileEntityTypes;
@@ -50,7 +52,8 @@ public class ClientRender {
 
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
-        ClientRegistrationUtil.registerClientReloadListeners(event, EvoRenderEnergyCubeItem.RENDERER);
+        ClientRegistrationUtil.registerClientReloadListeners(event, EvoRenderEnergyCubeItem.RENDERER,
+                RenderPlasmaPickaxe.RENDERER);
     }
 
     @SubscribeEvent
@@ -61,6 +64,7 @@ public class ClientRender {
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(EvoModelEnergyCore.CORE_LAYER, EvoModelEnergyCore::createLayerDefinition);
+        event.registerLayerDefinition(ModelPlasmaPickaxe.PLASMA_PICKAXE_LAYER, ModelPlasmaPickaxe::createLayerDefinition);
     }
 
     @SubscribeEvent
