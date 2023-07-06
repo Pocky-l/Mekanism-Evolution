@@ -18,7 +18,9 @@ import su.gamepoint.pocky.mekaevolution.client.EvoRenderUniversalCable;
 import su.gamepoint.pocky.mekaevolution.client.energycube.EvoRenderEnergyCube;
 import su.gamepoint.pocky.mekaevolution.client.energycube.EvoRenderEnergyCubeItem;
 import su.gamepoint.pocky.mekaevolution.common.item.render.ModelPlasmaPickaxe;
+import su.gamepoint.pocky.mekaevolution.common.item.render.ModelPlasmaSword;
 import su.gamepoint.pocky.mekaevolution.common.item.render.RenderPlasmaPickaxe;
+import su.gamepoint.pocky.mekaevolution.common.item.render.RenderPlasmaSword;
 import su.gamepoint.pocky.mekaevolution.registers.BlockRegister;
 import su.gamepoint.pocky.mekaevolution.registers.TileEntityTypes;
 
@@ -73,11 +75,12 @@ public class ClientRender {
     @SubscribeEvent
     public static void registerClientReloadListeners(RegisterClientReloadListenersEvent event) {
         ClientRegistrationUtil.registerClientReloadListeners(event, EvoRenderEnergyCubeItem.RENDERER,
-                RenderPlasmaPickaxe.RENDERER);
+                RenderPlasmaPickaxe.RENDERER, RenderPlasmaSword.RENDERER);
     }
 
     @SubscribeEvent
     public static void registerLayer(EntityRenderersEvent.RegisterLayerDefinitions event) {
         event.registerLayerDefinition(ModelPlasmaPickaxe.PLASMA_PICKAXE_LAYER, ModelPlasmaPickaxe::createLayerDefinition);
+        event.registerLayerDefinition(ModelPlasmaSword.PLASMA_SWORD_LAYER, ModelPlasmaSword::createLayerDefinition);
     }
 }
