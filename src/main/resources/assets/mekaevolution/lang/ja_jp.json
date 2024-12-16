@@ -1,0 +1,38 @@
+{
+  "block.mekaevolution.absolute_logistical_transporter": "絶対物流トランスポーター",
+  "block.mekaevolution.supreme_logistical_transporter": "最高物流トランスポーター",
+  "block.mekaevolution.cosmic_logistical_transporter": "宇宙物流トランスポーター",
+  "block.mekaevolution.infinite_logistical_transporter": "無限物流トランスポーター",
+
+  "block.mekaevolution.absolute_universal_cable": "絶対ユニバーサルケーブル",
+  "block.mekaevolution.supreme_universal_cable": "最高ユニバーサルケーブル",
+  "block.mekaevolution.cosmic_universal_cable": "宇宙ユニバーサルケーブル",
+  "block.mekaevolution.infinite_universal_cable": "無限ユニバーサルケーブル",
+
+  "block.mekaevolution.absolute_mechanical_pipe": "絶対メカニカルパイプ",
+  "block.mekaevolution.supreme_mechanical_pipe": "最高メカニカルパイプ",
+  "block.mekaevolution.cosmic_mechanical_pipe": "宇宙メカニカルパイプ",
+  "block.mekaevolution.infinite_mechanical_pipe": "無限メカニカルパイプ",
+
+  "block.mekaevolution.absolute_energy_cube": "絶対エネルギーキューブ",
+  "block.mekaevolution.supreme_energy_cube": "最高エネルギーキューブ",
+  "block.mekaevolution.cosmic_energy_cube": "宇宙エネルギーキューブ",
+  "block.mekaevolution.infinite_energy_cube": "無限エネルギーキューブ",
+
+  "container.mekaevolution.absolute_energy_cube": "絶対エネルギーキューブ",
+  "container.mekaevolution.supreme_energy_cube": "最高エネルギーキューブ",
+  "container.mekaevolution.cosmic_energy_cube": "宇宙エネルギーキューブ",
+  "container.mekaevolution.infinite_energy_cube": "無限エネルギーキューブ",
+
+  "item.mekaevolution.qio_drive_absolute": "絶対QIOドライブ",
+  "item.mekaevolution.qio_drive_supreme": "最高QIOドライブ",
+  "item.mekaevolution.qio_drive_cosmic": "宇宙QIOドライブ",
+  "item.mekaevolution.qio_drive_infinite": "無限QIOドライブ",
+
+  "item.mekaevolution.absolute_control_circuit": "絶対制御回路",
+  "item.mekaevolution.supreme_control_circuit": "最高制御回路",
+  "item.mekaevolution.cosmic_control_circuit": "宇宙制御回路",
+  "item.mekaevolution.infinite_control_circuit": "無限制御回路",
+
+  "item.mekaevolution.plasma_pickaxe": "プラズマのツルハシ"
+}
